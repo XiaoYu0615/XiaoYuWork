@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>待办事项管理系统</title>
+</head>
+<body>
+    <h1>待办事项管理系统</h1>
+    <button id="create-button">创建新的待办事项</button>
+    <table>
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>截止日期</th>
+                <th>当前状态</th>
+                <th>优先级</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="todo-list">
+            <!-- 待办事项列表 -->
+        </tbody>
+    </table>
+
+    <!-- 创建新的待办事项的模态框 -->
+    <div id="create-modal" style="display: none;">
+        <h2>创建新的待办事项</h2>
+        <form id="create-form">
+            <label>标题：<input type="text" name="title"></label><br>
+            <label>描述：<textarea name="description"></textarea></label><br>
+            <label>截止日期：<input type="date" name="dueDate"></label><br>
+            <label>当前状态：
+                <select name="status">
+                    <option value="未开始">未开始</option>
+                    <option value="进行中">进行中</option>
+                    <option value="已完成">已完成</option>
+                </select>
+            </label><br>
+            <label>优先级：
+                <select name="priority">
+                    <option value="高">高</option>
+                    <option value="中">中</option>
+                    <option value="低">低</option>
+                </select>
+            </label><br>
+            <button type="submit">创建</button>
+        </form>
+        <button id="close-button">关闭</button>
+    </div>
+
+</body>
+</html>
+
