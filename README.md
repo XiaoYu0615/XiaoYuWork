@@ -9,12 +9,16 @@
 
 ## 实施内容
 
-全栈
+前端
 
 ## 部署链接
 
-[我的网页](https://xiaoyu0615.github.io/XiaoYuWork/Login.html)
+[我的网页](https://xiaoyu0615.github.io/XiaoYuWork/To-Do.html)
 
 ## 相关文档
 
 [数据库](https://example.com/api)
+
+## 简介
+
+  我会用idea编写本地网页，这是我第一次编写在线网页。如果让我编写本地网页的话我觉得我可以完成作业中的全栈要求。但是我不知道的该怎么在Github中链接、跳转、上传数据库等，所以我就简单的编写了一个网页，没有加模板也没有连接数据库。在这个网页中我实现了登录、显示表单、增删改查和点击优先级排序。
