@@ -17,7 +17,7 @@
 
 ## 相关文档
 
-[数据库](https://example.com/api)
+[代码](https://github.com/XiaoYuWork/)
 
 ## 简介
 
