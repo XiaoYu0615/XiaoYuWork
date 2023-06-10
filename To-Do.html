@@ -127,7 +127,7 @@
             </label><br>
             <button type="submit">更新</button>
         </form>
-        <button id="close-button">关闭</button>
+        <button id="close-update-button">关闭</button>
     </div>
 
 <script>
@@ -248,6 +248,10 @@
         // 为表单添加提交事件监听器
         form.addEventListener('submit', handleFormSubmit);
     }
+    
+    document.getElementById('close-update-button').addEventListener('click', function() {
+        document.getElementById('update-modal').style.display = 'none';
+    }); 
 
     document.getElementById('search-button').addEventListener('click', searchTodos);         //查
     function searchTodos() {
