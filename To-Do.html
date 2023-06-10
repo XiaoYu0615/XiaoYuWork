@@ -1,52 +1,293 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>待办事项管理系统</title>
-</head>
-<body>
-    <h1>待办事项管理系统</h1>
-    <button id="create-button">创建新的待办事项</button>
-    <table>
-        <thead>
-            <tr>
-                <th>标题</th>
-                <th>截止日期</th>
-                <th>当前状态</th>
-                <th>优先级</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody id="todo-list">
-            <!-- 待办事项列表 -->
-        </tbody>
-    </table>
 
-    <!-- 创建新的待办事项的模态框 -->
-    <div id="create-modal" style="display: none;">
-        <h2>创建新的待办事项</h2>
-        <form id="create-form">
-            <label>标题：<input type="text" name="title"></label><br>
-            <label>描述：<textarea name="description"></textarea></label><br>
-            <label>截止日期：<input type="date" name="dueDate"></label><br>
-            <label>当前状态：
-                <select name="status">
-                    <option value="未开始">未开始</option>
-                    <option value="进行中">进行中</option>
-                    <option value="已完成">已完成</option>
-                </select>
-            </label><br>
-            <label>优先级：
-                <select name="priority">
-                    <option value="高">高</option>
-                    <option value="中">中</option>
-                    <option value="低">低</option>
-                </select>
-            </label><br>
-            <button type="submit">创建</button>
-        </form>
-        <button id="close-button">关闭</button>
-    </div>
+<head>
+    <title>待办事项管理系统</title>
+    <style>
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;      /* body元素的最小高度为视口高度的100% */
+            transform: scale(1.5)
+        }
+
+        #page2 {
+            display: none;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 第一个网页的内容 -->
+    <div id="page1">
+        <h1 style="color: rgb(255, 0, 0); text-align: center;">登录</h1>
+        <form id="login-form">
+            <div>
+                用户名:<input type="text" name="username">
+            </div>
+            <div>
+                密码:<input type="password" name="password">
+            </div>
+            <button type="submit">登录</button>
+        </form>
+    </div>
+
+    <!-- 第二个网页的内容 -->
+    <div id="page2">
+        <h1 style="color: rgb(255, 0, 0); text-align: center;">待办事项管理系统</h1>
+        <h1 style="color: coral;">欢迎，<span id="username" style="color: aqua;"></span>！</h1>
+
+        <div>
+            查询事项：
+            <input type="text" id="search-input" placeholder="请输入要查询的事项" value="">
+            <button id="search-button">查询</button><br>
+        </div>
+
+        <button id="create-button">创建新的待办事项</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>截止日期</th>
+                    <th>当前状态</th>
+                    <th>优先级</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="todo-list">
+                <!-- 待办事项列表 -->
+            </tbody>
+        </table>
+
+        <!-- 创建新的待办事项的模态框 -->
+        <div id="create-modal" style="display: none;">
+            <h2>创建新的待办事项</h2>
+            <form id="create-form">
+                <label>标题：<input type="text" name="title"></label><br>
+                <label>描述：<textarea name="description"></textarea></label><br>
+                <label>截止日期：<input type="date" name="dueDate"></label><br>
+                <label>当前状态：
+                    <select name="status">
+                        <option value="未开始">未开始</option>
+                        <option value="进行中">进行中</option>
+                        <option value="已完成">已完成</option>
+                    </select>
+                </label><br>
+                <label>优先级：
+                    <select name="priority">
+                        <option value="高">高</option>
+                        <option value="中">中</option>
+                        <option value="低">低</option>
+                    </select>
+                </label><br>
+                <button type="submit">创建</button>
+            </form>
+            <button id="close-button">关闭</button>
+        </div>
+    </div>
+
+    <!-- 更新待办事项的模态框 -->
+    <div id="update-modal" style="display: none;">
+        <h2>修改项目</h2>
+        <form id="update-form">
+            <label>标题：<input type="text" name="title"></label><br>
+            <label>描述：<textarea name="description"></textarea></label><br>
+            <label>截止日期：<input type="date" name="dueDate"></label><br>
+            <label>当前状态：
+                <select name="status">
+                    <option value="未开始">未开始</option>
+                    <option value="进行中">进行中</option>
+                    <option value="已完成">已完成</option>
+                </select>
+            </label><br>
+            <label>优先级：
+                <select name="priority">
+                    <option value="高">高</option>
+                    <option value="中">中</option>
+                    <option value="低">低</option>
+                </select>
+            </label><br>
+            <button type="submit">更新</button>
+        </form>
+        <button id="close-button">关闭</button>
+    </div>
+
+<script>
+
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+
+        // 获取表单数据
+        var username = event.target.username.value;
+        var password = event.target.password.value;
+
+        // 更新页面内容
+        document.getElementById('page1').style.display = 'none';
+        document.getElementById('page2').style.display = 'block';
+        document.getElementById('username').textContent = username;
+
+    });
+
+    // 为“创建新的待办事项”按钮添加点击事件监听器
+    document.getElementById('create-button').addEventListener('click', function() {         //增
+            document.getElementById('create-modal').style.display = 'block';
+        });
+
+        // 为模态框中的表单添加提交事件监听器
+        document.getElementById('create-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // 获取表单数据
+            var title = event.target.title.value;
+            var description = event.target.description.value;
+            var dueDate = event.target.dueDate.value;
+            var status = event.target.status.value;
+            var priority = event.target.priority.value;
+
+            // 使用获取到的数据创建一个新的待办事项
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${title}</td>
+                <td>${dueDate}</td>
+                <td>${status}</td>
+                <td>${priority}</td>
+                <td>
+                    <button class="update-button">修改</button>
+                    <button class="delete-button">删除</button>
+                </td>
+            `;
+            
+            //存储描述信息
+            newRow.dataset.description = description;
+
+            newRow.querySelector('.update-button').addEventListener('click', updateTodo);
+            newRow.querySelector('.delete-button').addEventListener('click', deleteTodo);
+            document.getElementById('todo-list').appendChild(newRow);
+
+            // 关闭模态框并重置表单
+            document.getElementById('create-modal').style.display = 'none';
+            event.target.reset();
+        });
+
+    document.getElementById('close-button').addEventListener('click', function() {
+        document.getElementById('create-modal').style.display = 'none';
+    }); 
+        
+    function deleteTodo(event) {                      //删
+        // 获取待办事项元素
+        var todo = event.target.parentElement.parentElement;
+
+        // 从待办事项列表中删除该元素
+        todo.parentElement.removeChild(todo);
+    }
+
+    function updateTodo(event) {                      //改
+        // 获取待办事项元素
+        var todo = event.target.parentElement.parentElement;
+
+        // 获取模态框元素
+        var modal = document.getElementById('update-modal');
+
+        // 填充表单字段
+        modal.querySelector('[name="title"]').value = todo.children[0].textContent;
+        modal.querySelector('[name="description"]').value = todo.dataset.description;
+        modal.querySelector('[name="dueDate"]').value = todo.children[1].textContent;
+        modal.querySelector('[name="status"]').value = todo.children[2].textContent;
+        modal.querySelector('[name="priority"]').value = todo.children[3].textContent;
+
+        // 弹出模态框
+        modal.style.display = 'block';
+
+        // 获取表单元素
+        var form = modal.querySelector('form');
+
+        // 定义表单提交处理函数
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // 获取表单数据
+            var title = event.target.title.value;
+            var description = event.target.description.value;
+            var dueDate = event.target.dueDate.value;
+            var status = event.target.status.value;
+            var priority = event.target.priority.value;
+
+            // 更新待办事项
+            todo.children[0].textContent = title;
+            todo.dataset.description = description;
+            todo.children[1].textContent = dueDate;
+            todo.children[2].textContent = status;
+            todo.children[3].textContent = priority;
+
+            // 关闭模态框并重置表单
+            modal.style.display = 'none';
+            event.target.reset();
+
+            // 移除表单提交事件监听器
+            form.removeEventListener('submit', handleFormSubmit);
+        }
+
+        // 为表单添加提交事件监听器
+        form.addEventListener('submit', handleFormSubmit);
+    }
+
+    document.getElementById('search-button').addEventListener('click', searchTodos);         //查
+    function searchTodos() {
+        // 获取输入值并转换为小写
+        var searchValue = document.getElementById('search-input').value.toLowerCase();
+        // 遍历表格中的每一行
+        var rows = document.querySelectorAll('#todo-list tr');
+        rows.forEach(function(row) {
+            var title = row.children[0].textContent.toLowerCase();         // 获取标题并转换为小写
+
+            if (title.indexOf(searchValue) === -1) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+    }
+
+    document.querySelector('th:nth-child(4)').addEventListener('click', sortTodos);               //优先级排序
+    function sortTodos() {
+        // 获取待办事项列表元素
+        var todoList = document.getElementById('todo-list');
+
+        // 获取所有待办事项并转换为数组
+        var rows = Array.from(todoList.querySelectorAll('tr'));
+
+        // 根据截止日期对待办事项进行排序
+        rows.sort(function(a, b) {
+            var dateA = new Date(a.children[1].textContent);
+            var dateB = new Date(b.children[1].textContent);
+            return dateA - dateB;
+        });
+
+        // 将排序后的待办事项重新添加到列表中
+        rows.forEach(function(row) {
+            todoList.appendChild(row);
+        });
+    }
+
+</script>
 
 </body>
 </html>
-
